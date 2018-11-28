@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
+import { ChartService } from '../../services/chartService/chart.service';
 
 @Component({
   templateUrl: 'chartjs.component.html'
 })
 export class ChartJSComponent {
 
+  constructor(private service: ChartService) {
+  }
   // lineChart
   public lineChartData: Array<any> = [
     { data: [90, 95, 100, 95, 98, 100, 90, 90, 95, 100, 95, 98, 100, 90, 90, 95, 100, 95, 98, 100, 90], label: 'Doc IA' },
