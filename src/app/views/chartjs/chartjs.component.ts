@@ -1,12 +1,78 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChartService } from '../../services/chartService/chart.service';
+import { ChartModel } from '../../services/chartService/chart.model';
+import { TokenService } from '../../services/tokenService/token.service';
+import { DataSet } from '../../services/chartService/dataset.model';
+import { ChartData } from '../../services/chartService/data.model';
+import { Chart } from 'chart.js';
 
 @Component({
   templateUrl: 'chartjs.component.html'
 })
-export class ChartJSComponent {
+export class ChartJSComponent implements OnInit {
 
-  constructor(private service: ChartService) {
+  public finishedLoading = false;
+  public chartColors = [
+    'rgba(255, 88, 0, 0.2)', 'rgba(137, 0, 120, 0.2)', 'rgba(180, 60, 20, 0.2)', 'rgba(151, 0, 50, 0.2)', 'rgba(115, 80, 79, 0.2)',
+    'rgba(43, 5, 39, 0.2)', 'rgba(123, 75, 64, 0.2)', 'rgba(205, 70, 56, 0.2)', 'rgba(186, 86, 191, 0.2)', 'rgba(35, 121, 61, 0.2)'];
+
+  public borderChartColors = [
+    'rgba(255, 88, 0, 1)', 'rgba(137, 0, 120, 1)', 'rgba(180, 60, 20, 1)', 'rgba(151, 0, 50, 1)', 'rgba(115, 80, 79, 1)',
+    'rgba(43, 5, 39, 1)', 'rgba(123, 75, 64, 1)', 'rgba(205, 70, 56, 1)', 'rgba(186, 86, 191, 1)', 'rgba(35, 121, 61, 1)'];
+
+  constructor(private chartService: ChartService, private tokenService: TokenService) { }
+
+  ngOnInit(): void {
+    this._getTokenAndCreateCharts();
+  }
+
+  private _getTokenAndCreateCharts() {
+    this.tokenService.GetToken().subscribe(result => {
+
+      var token = result.token;
+      this._getChartRequestCount(token);
+      this._getChartResponseTimeCount(token);
+
+    }, (error) => console.log(error));
+  }
+
+  private _getChartRequestCount(token: string) {
+    this._makeChartRequest("RequestCount", token, "line", "chamadosApi");
+  }
+
+  private _getChartResponseTimeCount(token: string) {
+    this._makeChartRequest("ResponseTime", token, "line", "respostaChamadosApi");
+  }
+
+  private _makeChartRequest(idChart: string, token: string, type: string, elementId: string) {
+    this.chartService.GetChartTelemetry(idChart, token).subscribe((chart: ChartModel) => {
+      this.finishedLoading = true;
+      this._createChart(chart.Categories, chart.DataSets, type, elementId)
+    },
+      (error) => console.log(error));
+  }
+
+  private _createChart(categories: any, dataSets: any, type: any, id: any) {
+    new Chart(id, {
+      type: type,
+      data: {
+        labels: categories,
+        datasets: dataSets
+      },
+      options: {
+        legend: {
+          display: true
+        },
+        scales: {
+          xAxes: [{
+            display: true
+          }],
+          yAxes: [{
+            display: true
+          }],
+        }
+      }
+    });
   }
   // lineChart
   public lineChartData: Array<any> = [

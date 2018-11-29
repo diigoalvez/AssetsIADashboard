@@ -7,11 +7,10 @@ import { navItems } from './../../_nav';
 })
 export class DefaultLayoutComponent {
   public navItems = navItems;
-  public sidebarMinimized = true;
+  public sidebarMinimized = false;
   private changes: MutationObserver;
   public element: HTMLElement = document.body;
   constructor() {
-
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
     });
@@ -19,5 +18,6 @@ export class DefaultLayoutComponent {
     this.changes.observe(<Element>this.element, {
       attributes: true
     });
+    
   }
 }
