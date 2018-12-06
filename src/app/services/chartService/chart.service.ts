@@ -9,7 +9,8 @@ import { Observable, Subscription } from 'rxjs';
 export class ChartService {
 
   chartArrays: string[] = ["RequestCount", "ResponseTime", "Error"];
-  chartUrl: string = "https://santanderdashboardava.azurewebsites.net/api/Dashboard";
+  // chartUrl: string = "https://santanderdashboardava.azurewebsites.net/api/Dashboard";
+  chartUrl: string = "http://localhost:7071/api/Dashboard";
   functionKey: string = "AwEe5w1VnK6ojLLEk9vxcvsn2pPxaC3WuX3SfRlP7Dl2500UQCZVbA=="
   charts: any[] = [];
 

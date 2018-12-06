@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class TokenService {
 
-  tokenUrl: string = "http://santanderdashboardava.azurewebsites.net/api/login";
+  // tokenUrl: string = "https://santanderdashboardava.azurewebsites.net/api/login";
+  tokenUrl: string = "http://localhost:7071/api/login";
   tokenBody: any = {
     "tenantId": "rodrigo",
     "secretKey": "teste"
